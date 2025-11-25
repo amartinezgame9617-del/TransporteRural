@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - InDriver</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            color: #666;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: #2196F3;
+            border-bottom-color: #2196F3;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .btn {
+            width: 100%;
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #1976D2;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Parte del Login -->
+        <div class="header">
+            <h1>Bienvenido</h1>
+            <p>Inicia sesión o crea una cuenta</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('login')">Iniciar Sesión</div>
+            <div class="tab" onclick="showTab('register')">Registrarse</div>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Formulario de Login -->
+        <div id="loginForm" class="form-content active">
+            <form action="LoginServlet" method="POST">
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+
+                <button type="submit" class="btn">Iniciar Sesión</button>
+
+                <div class="forgot-password">
+                    <a href="recuperar-password.jsp">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div class="form-group">
+                    <label for="registerRole">Registrarse como</label>
+                    <select id="registerRole" name="rol" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="pasajero">Pasajero</option>
+                        <option value="conductor">Conductor</option>
+                    </select>
+        </div>
+        <div id="registerForm" class="form-content">
+            <form action="RegisterServlet" method="POST">
+                <div class="form-group">
+                    <label for="registerName">Nombre Completo</label>
+                    <input type="text" id="registerName" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPhone">Teléfono</label>
+                    <input type="tel" id="registerPhone" name="telefono" required>
+                </div>
+
+                
+
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña</label>
+                    <input type="password" id="registerPassword" name="password" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirmar Contraseña</label>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn">Crear Cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Ocultar todos los formularios
+            const forms = document.querySelectorAll('.form-content');
+            forms.forEach(form => form.classList.remove('active'));
+
+            // Desactivar todas las pestañas
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Mostrar el formulario y activar la pestaña correspondiente
+            if (tabName === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+                document.querySelectorAll('.tab')[0].classList.add('active');
+            } else {
+                document.getElementById('registerForm').classList.add('active');
+                document.querySelectorAll('.tab')[1].classList.add('active');
+            }
+
+            // Limpiar mensaje de error
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        // Validar que las contraseñas coincidan en el registro
+        document.getElementById('registerForm').querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                const errorMsg = document.getElementById('errorMessage');
+                errorMsg.textContent = 'Las contraseñas no coinciden';
+                errorMsg.classList.add('show');
+            }
+        });
+
+        // Mostrar mensajes de error si vienen por parámetro (desde el servidor)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            
+            if (error) {
+                const errorMsg = document.getElementById('errorMessage');
+                if (error === 'invalido') {
+                    errorMsg.textContent = 'Credenciales inválidas';
+                } else if (error === 'exists') {
+                    errorMsg.textContent = 'El correo ya está registrado';
+                    showTab('register');
+                } else if (error === 'registro_fallido') {
+                    errorMsg.textContent = 'Error al crear la cuenta';
+                    showTab('register');
+                }
+                errorMsg.classList.add('show');
+            }
+        };
+    </script>
+</body>
+</html>
